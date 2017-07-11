@@ -1,7 +1,13 @@
 <?php
 ob_start();
+session_start();
 include "admin/include/db.php";
-print "<head>
+if (isset($_SESSION['username'])){
+    echo $_SESSION['username'];
+    header("Location: index.php");
+}
+else {
+    print "<head>
     <meta charset='utf-8' />
     <link rel='apple-touch-icon' sizes='76x76' href='../CMS/assets/img/apple-icon.png'>
     <link rel='icon' type='image/png' href='../CMS/assets/img/favicon.png'>
@@ -16,7 +22,7 @@ print "<head>
     <link href='../CMS/assets/css/now-ui-kit.css' rel='stylesheet' />
 </head>";
 
-print "<body class='login-page'>
+    print "<body class='login-page'>
     <!-- Navbar -->
     <nav class='navbar navbar-toggleable-md bg-primary fixed-top navbar-transparent ' color-on-scroll='500'>
         <div class='container'>            
@@ -65,31 +71,30 @@ print "<body class='login-page'>
                 <div class='card card-login card-plain'>
                     <form class='form' method='post' action=''>
                         <div class='header header-primary text-center'>
-                            <div class='logo-container'>
-                                <img src='../CMS/assets/img/now-logo.png' alt=''>
+                            <div class='container'>
+                                <h1 class='title'>Login</h1>
                             </div>
                         </div>";
 
 //Memanggil user
-if (isset($_POST['login'])){
-    $username = mysqli_escape_string($dbc, strip_tags($_POST['username']));
-    $user_password = mysqli_escape_string($dbc, $_POST['user_password']);
-    $query = "SELECT * FROM users WHERE username='{$username}'";
-    if ($result = mysqli_query($dbc, $query)){
-        if (mysqli_num_rows($result)==1){
-            $row = mysqli_fetch_assoc($result);
-            $hash = $row['user_password'];
-            if ($username == $row['username'] && password_verify("$user_password", "$hash")){
-                session_start();
-                $_SESSION['username']= $username;
-                $_SESSION['user_fullname'] = $row['user_fullname'];
-                $_SESSION['user_image'] = $row['user_image'];
-                $_SESSION['user_email'] = $row['user_email'];
-                $_SESSION['user_role'] = $row['user_role'];
-                header("Location: index.php");
-            }
-            else {
-                print "<div class=\"alert alert-danger\" role=\"alert\">
+    if (isset($_POST['login'])) {
+        $username = mysqli_escape_string($dbc, strip_tags($_POST['username']));
+        $user_password = mysqli_escape_string($dbc, $_POST['user_password']);
+        $query = "SELECT * FROM users WHERE username='{$username}'";
+        if ($result = mysqli_query($dbc, $query)) {
+            if (mysqli_num_rows($result) == 1) {
+                $row = mysqli_fetch_assoc($result);
+                $hash = $row['user_password'];
+                if ($username == $row['username'] && password_verify("$user_password", "$hash")) {
+                    session_start();
+                    $_SESSION['username'] = $username;
+                    $_SESSION['user_fullname'] = $row['user_fullname'];
+                    $_SESSION['user_image'] = $row['user_image'];
+                    $_SESSION['user_email'] = $row['user_email'];
+                    $_SESSION['user_role'] = $row['user_role'];
+                    header("Location: index.php");
+                } else {
+                    print "<div class=\"alert alert-danger\" role=\"alert\">
 	            <div class=\"container\">
 			        <i class=\"now-ui-icons objects_support-17\"></i>
 		            <strong>Oh snap!</strong> Check and retry.
@@ -100,12 +105,12 @@ if (isset($_POST['login'])){
 		            </button>
 	            </div>
             </div>";
+                }
             }
         }
     }
-}
 
-                        print "<div class='content'>
+    print "<div class='content'>
                             <div class='input-group form-group-no-border input-lg'>
                                 <span class='input-group-addon'>
                                     <i class='now-ui-icons users_circle-08'></i>
@@ -120,7 +125,7 @@ if (isset($_POST['login'])){
                             </div>
                         </div>
                         <div class='footer text-center'>
-                            <button class='btn btn-primary btn-round btn-lg btn-block' type='submit' name='login'>Login</button>
+                            <button class='btn btn-primary btn-round btn-lg btn-block' type='submit' name='login'>Get Started</button>
                         </div>
                         <div class='pull-left'>
                             <h6>
@@ -137,38 +142,14 @@ if (isset($_POST['login'])){
             </div>
         </div>
         <footer class='footer'>
-            <div class='container'>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href='https://www.creative-tim.com'>
-                                Creative Tim
-                            </a>
-                        </li>
-                        <li>
-                            <a href='http://presentation.creative-tim.com'>
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href='http://blog.creative-tim.com'>
-                                Blog
-                            </a>
-                        </li>
-                        <li>
-                            <a href='https://github.com/creativetimofficial/now-ui-kit/blob/master/LICENSE.md'>
-                                MIT License
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+            <div class='container'>                
                 <div class='copyright'>
                     &copy;
                     <script>
                         document.write(new Date().getFullYear())
                     </script>, Thanks to
-                    <a href='http://www.invisionapp.com' target='_blank'>Invision</a> and
-                    <a href='https://www.creative-tim.com' target='_blank'>Creative Tim</a>.
+                    <a href=\"http://www.invisionapp.com\" target=\"_blank\" rel=\"nofollow\">Invision</a> and
+            <a href=\"https://www.creative-tim.com\" target=\"_blank\" rel=\"nofollow\">Creative Tim</a>.
                 </div>
             </div>
         </footer>
@@ -178,13 +159,7 @@ if (isset($_POST['login'])){
 <script src='../CMS/assets/js/core/jquery.3.2.1.min.js' type='text/javascript'></script>
 <script src='../CMS/assets/js/core/tether.min.js' type='text/javascript'></script>
 <script src='../CMS/assets/js/core/bootstrap.min.js' type='text/javascript'></script>
-<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
-<script src='../CMS/assets/js/plugins/bootstrap-switch.js'></script>
-<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src='../CMS/assets/js/plugins/nouislider.min.js' type='text/javascript'></script>
-<!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
-<script src='../CMS/assets/js/plugins/bootstrap-datepicker.js' type='text/javascript'></script>
-<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
 <script src='../CMS/assets/js/now-ui-kit.js' type='text/javascript'></script>
 
 </html>";
+}

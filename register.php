@@ -1,6 +1,15 @@
 <?php
 ob_start();
+session_start();
 include "admin/include/db.php";
+if (isset($_SESSION["user_role"])){
+    if ($_SESSION["user_role"] != "admin") {
+        header("Location: index.php");
+    }
+}
+else {
+    header("Location: index.php");
+}
 print "<head>
     <meta charset='utf-8' />
     <link rel='apple-touch-icon' sizes='76x76' href='../CMS/assets/img/apple-icon.png'>
@@ -65,8 +74,8 @@ print "<body class='login-page'>
                 <div class='card card-login card-plain'>
                     <form class='form' method='post' action='register.php'>
                         <div class='header header-primary text-center'>
-                            <div class='logo-container'>
-                                <img src='../CMS/assets/img/now-logo.png' alt=''>
+                            <div class='container'>
+                                <h1 class='title'>Register</h1>
                             </div>
                         </div>";
 
@@ -170,7 +179,7 @@ if (isset($_POST['add_user'])){
                             </div>
                         </div>
                         <div class='footer text-center'>
-                            <button class='btn btn-primary btn-round btn-lg btn-block' type='submit' name='add_user'>Register</button>
+                            <button class='btn btn-primary btn-round btn-lg btn-block' type='submit' name='add_user'>Create User</button>
                         </div>
                         <div class='pull-left'>
                             <h6>
@@ -187,38 +196,14 @@ if (isset($_POST['add_user'])){
             </div>
         </div>
         <footer class='footer'>
-            <div class='container'>
-                <nav>
-                    <ul>
-                        <li>
-                            <a href='https://www.creative-tim.com'>
-                                Creative Tim
-                            </a>
-                        </li>
-                        <li>
-                            <a href='http://presentation.creative-tim.com'>
-                                About Us
-                            </a>
-                        </li>
-                        <li>
-                            <a href='http://blog.creative-tim.com'>
-                                Blog
-                            </a>
-                        </li>
-                        <li>
-                            <a href='https://github.com/creativetimofficial/now-ui-kit/blob/master/LICENSE.md'>
-                                MIT License
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
+            <div class='container'>                
                 <div class='copyright'>
                     &copy;
                     <script>
                         document.write(new Date().getFullYear())
                     </script>, Thanks to
-                    <a href='http://www.invisionapp.com' target='_blank'>Invision</a> and
-                    <a href='https://www.creative-tim.com' target='_blank'>Creative Tim</a>.
+                    <a href=\"http://www.invisionapp.com\" target=\"_blank\" rel=\"nofollow\">Invision</a> and
+            <a href=\"https://www.creative-tim.com\" target=\"_blank\" rel=\"nofollow\">Creative Tim</a>.
                 </div>
             </div>
         </footer>
@@ -228,13 +213,6 @@ if (isset($_POST['add_user'])){
 <script src='../CMS/assets/js/core/jquery.3.2.1.min.js' type='text/javascript'></script>
 <script src='../CMS/assets/js/core/tether.min.js' type='text/javascript'></script>
 <script src='../CMS/assets/js/core/bootstrap.min.js' type='text/javascript'></script>
-<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
-<script src='../CMS/assets/js/plugins/bootstrap-switch.js'></script>
-<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src='../CMS/assets/js/plugins/nouislider.min.js' type='text/javascript'></script>
-<!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
-<script src='../CMS/assets/js/plugins/bootstrap-datepicker.js' type='text/javascript'></script>
-<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
 <script src='../CMS/assets/js/now-ui-kit.js' type='text/javascript'></script>
 
 </html>";

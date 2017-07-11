@@ -365,7 +365,6 @@ function active_link(){
                 <li class=''><a href='all_user.php'><i class='fa fa-user'></i> <span>Users</span></a></li>";
             break;
         case "all_user.php":
-        case "add_user.php":
         case "profile.php":
         case "edit_user.php":
             echo "<li class=''><a href='index.php'><i class='fa fa-dashboard'></i> <span>Dashoard</span></a></li>

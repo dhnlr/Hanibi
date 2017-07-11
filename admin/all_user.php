@@ -13,6 +13,7 @@ if (isset($_SESSION["username"])) {
         print "<!-- Main content -->
     <section class='content'>
         <div class='box-body no-padding'>
+        <a href='../register.php' class='btn btn-success pull-right' type='submit' name='add_user'>Create User</a><br/>
               <table class='table table-striped'>
                 <tr>
                   <th style='width: 10px'>#</th>
